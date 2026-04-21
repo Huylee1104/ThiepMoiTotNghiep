@@ -1,0 +1,556 @@
+﻿@{
+    ViewData["Title"] = "Thiệp Mời Tốt Nghiệp - Lễ Quốc Huy";
+}
+
+@section Styles {
+    <style>
+        :root {
+            --primary-color: #A67C52; /* Màu nâu đậm tiêu đề */
+            --accent-color: #E89528; /* Màu cam/vàng đậm accent */
+            --bg-color: #FFFDF1; /* Màu nền kem nhạt */
+            --card-bg: #FFFFFF;
+            --text-color: #333333;
+            --info-label-color: #8C8C8C;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Phần Tiêu đề trên cùng */
+        .header-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .welcome-text {
+            color: var(--primary-color);
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .guest-name-header {
+            color: var(--accent-color);
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .graduation-title-box {
+            display: inline-block;
+            border: 3px solid var(--accent-color);
+            padding: 15px 40px;
+            border-radius: 10px;
+            background-color: var(--card-bg);
+            box-shadow: 0 4px 10px rgba(232, 149, 40, 0.2);
+        }
+
+        .graduation-title {
+            color: var(--accent-color);
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .graduation-year {
+            color: var(--primary-color);
+            font-size: 18px;
+            margin: 5px 0 0 0;
+        }
+
+        /* Cấu trúc 2 cột trên Desktop */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        /* Cột trái: Thông tin */
+        .info-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(232, 149, 40, 0.1);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #EEEEEE;
+        }
+
+            .info-item:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+            }
+
+        .info-icon {
+            width: 45px;
+            height: 45px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .info-text-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            color: var(--info-label-color);
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .info-value {
+            color: var(--text-color);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .info-value-sub {
+            color: var(--info-label-color);
+            font-size: 14px;
+        }
+
+        /* Phần Bãi giữ xe */
+        .parking-section {
+            margin-top: 30px;
+        }
+
+        .parking-title {
+            color: var(--primary-color);
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .parking-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #DDDDDD;
+            border-radius: 8px;
+            background-color: #FAF9F0; /* Màu nền ô chọn gần giống ảnh */
+            color: var(--text-color);
+            font-size: 16px;
+            margin-bottom: 10px;
+            appearance: none; /* Ẩn mũi tên mặc định */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3%3Cpath fill='%23A67C52' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+
+        /* Phần thông điệp tham gia */
+        .participation-notice {
+            background-color: #FEF9DB; /* Màu vàng nhạt khung ảnh */
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .participation-text-top {
+            color: var(--primary-color);
+            font-size: 16px;
+            font-style: italic;
+            margin-bottom: 5px;
+        }
+
+        .guest-name-participation {
+            color: var(--accent-color);
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Nút In Thiệp - Custom theo phong cách */
+        .btn-print-custom {
+            display: block;
+            width: 100%;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 10px rgba(232, 149, 40, 0.3);
+        }
+
+            .btn-print-custom:hover {
+                background-color: #D6841A;
+                color: white;
+            }
+
+        /* Cột phải: Ảnh */
+        .image-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 10px; /* Khung trắng bên trong */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 3px solid var(--accent-color); /* Viền vàng đậm bên ngoài */
+            position: relative;
+        }
+
+        .guest-image-container {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .guest-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Hiệu ứng góc viền trong ảnh */
+        .guest-image-container::before,
+        .guest-image-container::after,
+        .guest-image-container .corner-bl,
+        .guest-image-container .corner-br {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: var(--accent-color);
+            border-style: solid;
+            pointer-events: none;
+        }
+
+        .guest-image-container::before {
+            top: 10px;
+            left: 10px;
+            border-width: 2px 0 0 2px;
+        }
+        /* Góc trên trái */
+        .guest-image-container::after {
+            top: 10px;
+            right: 10px;
+            border-width: 2px 2px 0 0;
+        }
+        /* Góc trên phải */
+        .corner-bl {
+            bottom: 10px;
+            left: 10px;
+            border-width: 0 0 2px 2px;
+        }
+        /* Góc dưới trái */
+        .corner-br {
+            bottom: 10px;
+            right: 10px;
+            border-width: 0 2px 2px 0;
+        }
+        /* Góc dưới phải */
+
+        /* Responsive cho Mobile */
+        @@media (max-width: 768px) {
+            .main-container {
+                padding: 20px 10px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr; /* Xếp chồng 1 cột */
+                gap: 20px;
+            }
+            /* Đổi thứ tự: Tiêu đề -> Ảnh -> Thông tin */
+            .header-section {
+                order: 1;
+            }
+
+            .image-card {
+                order: 2;
+                margin-bottom: 20px;
+            }
+
+            .info-card {
+                order: 3;
+            }
+
+            .welcome-text {
+                font-size: 20px;
+            }
+
+            .guest-name-header {
+                font-size: 26px;
+            }
+
+            .graduation-title {
+                font-size: 22px;
+            }
+
+            .graduation-title-box {
+                padding: 10px 25px;
+            }
+
+            .info-card {
+                padding: 20px;
+            }
+
+            .info-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+                margin-right: 15px;
+            }
+
+            .info-value {
+                font-size: 16px;
+            }
+        }
+    </style>
+}
+
+<div class="main-container">
+    <div class="header-section">
+        <p class="welcome-text">Chào mừng bạn</p>
+        <p id="welcomeTextName" class="guest-name-header">Quý khách</p>
+
+        <div class="graduation-title-box">
+            <h1 class="graduation-title">Lễ Tốt Nghiệp</h1>
+            <p class="graduation-year">NIÊN KHÓA 2026</p>
+        </div>
+    </div>
+
+    <div class="content-grid">
+        <div class="info-card">
+            <div class="info-item">
+                <div class="info-icon"><i class="bi bi-person"></i></div>
+                <div class="info-text-group">
+                    <span class="info-label">Người tốt nghiệp:</span>
+                    <span class="info-value">LÊ QUỐC HUY</span>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon"><i class="bi bi-mortarboard"></i></div>
+                <div class="info-text-group">
+                    <span class="info-label">Chuyên ngành:</span>
+                    <span class="info-value">HỆ THỐNG THÔNG TIN QUẢN LÝ</span>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon"><i class="bi bi-clock"></i></div>
+                <div class="info-text-group">
+                    <span class="info-label">Thời gian:</span>
+                    <span class="info-value">14:00 - 24/05/2026</span>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon"><i class="bi bi-geo-alt"></i></div>
+                <div class="info-text-group">
+                    <span class="info-label">Địa điểm:</span>
+                    <span class="info-value">Giảng đường chính</span>
+                    <span class="info-value-sub">Trường đại học Ngân hàng TPHCM</span>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon"><i class="bi bi-map"></i></div>
+                <div class="info-text-group">
+                    <span class="info-label">Địa chỉ:</span>
+                    <span class="info-value">56 Hoàng Diệu 2, Phường Thủ Đức</span>
+                    <span class="info-value-sub">TP. Hồ Chí Minh</span>
+                </div>
+            </div>
+
+            <div class="parking-section">
+                <p class="parking-title">Vị trí bãi giữ xe máy:</p>
+
+                <div class="dropdown">
+                    <div class="dropdown-btn">Chọn vị trí</div>
+
+                    <ul class="dropdown-list">
+                        <li data-value="gate16"><b>Cổng 16 (Ưu tiên 1):</b> 32A Đ. Số 16, Linh Chiểu, Thủ Đức, Hồ Chí Minh, Việt Nam</li>
+                        <li data-value="gate17"><b>Cổng 17 (Ưu tiên 2):</b> VQ46+CGF, Linh Chiểu, Thủ Đức, Hồ Chí Minh, Việt Nam</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="participation-notice">
+                <p class="participation-text-top">Rất mong sự tham gia của bạn</p>
+                <p id="participationTextName" class="guest-name-participation">Quý khách</p>
+            </div>
+
+            <button id="btnPrint" class="btn-print-custom" style="display: none;" onclick="printInvitation()">
+                <i class="bi bi-printer"></i> In Thiệp
+            </button>
+        </div>
+
+        <div class="image-card">
+            <div class="guest-image-container">
+                <img id="guestImage" src="~/images/default-grad.jpg" alt="Ảnh Tốt Nghiệp" class="guest-image" />
+
+                <div class="corner-bl"></div>
+                <div class="corner-br"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="nameModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="nameModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nameModalLabel">Nhập Tên Khách Mời</h5>
+            </div>
+            <div class="modal-body">
+                <p>Vui lòng nhập họ và tên của bạn để chúng tôi xác nhận danh sách:</p>
+                <input type="text" id="guestNameInput" class="form-control" placeholder="Ví dụ: Lê Quốc Huy" />
+                <div id="nameError" class="text-danger mt-2" style="display: none;">Vui lòng nhập tên!</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="submitName()">Xác Nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="attendanceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="attendanceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="attendanceModalLabel">Xác Nhận Tham Gia</h5>
+            </div>
+            <div class="modal-body">
+                Bạn có tham gia lễ tốt nghiệp cùng chúng tôi không?
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-success" onclick="submitAttendance(true)">Có, tôi sẽ tham gia</button>
+                <button type="button" class="btn btn-secondary" onclick="submitAttendance(false)">Không, tôi bận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Hãy bấm in thiệp ở bên dưới!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        let currentGuestId = 0;
+        let currentGuestName = "";
+        let nameModal;
+        let attendanceModal;
+
+        $(document).ready(function () {
+            $('#guestImage').attr('src', '/img/huy.png');
+            nameModal = new bootstrap.Modal(document.getElementById('nameModal'));
+            attendanceModal = new bootstrap.Modal(document.getElementById('attendanceModal'));
+
+            nameModal.show();
+        });
+
+        function submitName() {
+            var rawName = $('#guestNameInput').val().trim();
+            if (rawName === "") {
+                $('#nameError').show();
+                return;
+            }
+            $('#nameError').hide();
+
+            $.post('/Home/CheckGuest', { rawName: rawName }, function (data) {
+                currentGuestId = data.id;
+                currentGuestName = data.displayName;
+
+                // Cập nhật UI
+                if(data.image && data.image !== "") {
+                    // Thêm tham số random để tránh cache nếu bạn có chức năng đổi ảnh sau này
+                    $('#guestImage').attr('src', data.image);
+                } else {
+                    // Trường hợp dự phòng nếu không có ảnh
+                    $('#guestImage').attr('src', '/img/huy.png');
+                }
+
+                // Cập nhật tên vào 2 vị trí mới
+                $('#welcomeTextName').text(currentGuestName);
+                $('#participationTextName').text(currentGuestName);
+
+                nameModal.hide();
+
+                setTimeout(function () {
+                    attendanceModal.show();
+                }, 5000);
+            });
+        }
+
+        function submitAttendance(isAttending) {
+            $.post('/Home/UpdateAttendance', { id: currentGuestId, isAttending: isAttending }, function () {
+                attendanceModal.hide();
+                if (isAttending) {
+                    $('#btnPrint').show(); // Hiện nút in
+                    var toastEl = document.getElementById('liveToast');
+                    var toast = new bootstrap.Toast(toastEl);
+                    toast.show();
+                }
+            });
+        }
+
+        // function printInvitation() {
+        //     window.open('/Home/GeneratePdf?id=' + currentGuestId + '&displayName=' + encodeURIComponent(currentGuestName), '_blank');
+        // }
+
+        // function printInvitation() {
+        //     const url = '/Home/GeneratePdf?id=' + currentGuestId + '&displayName=' + encodeURIComponent(currentGuestName);
+
+        //     const iframe = document.createElement('iframe');
+        //     iframe.style.display = 'none';
+        //     iframe.src = url;
+
+        //     document.body.appendChild(iframe);
+
+        //     iframe.onload = function() {
+        //         setTimeout(function() {
+        //             iframe.contentWindow.focus();
+        //             iframe.contentWindow.print();
+
+        //         }, 500);
+        //     };
+        // }
+
+        function printInvitation() {
+            const url = '/Home/GeneratePdf?id=' + currentGuestId + '&displayName=' + encodeURIComponent(currentGuestName);
+            window.open(url, '_blank');
+        }
+    </script>
+}
