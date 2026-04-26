@@ -134,7 +134,7 @@ namespace GraduationInvite.Controllers
                 wwwroot,
                 imgFolderExists = Directory.Exists(imgFolder),
                 filesInImg = files,
-                targetExists = System.IO.File.Exists(Path.Combine(wwwroot, "img", "Thiep_Moi.png"))
+                targetExists = System.IO.File.Exists(Path.Combine(wwwroot, "img", "thiep_moi.png"))
             });
         }
 
