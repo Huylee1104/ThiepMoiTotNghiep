@@ -107,7 +107,7 @@ namespace GraduationInvite.Controllers
                         // Layer 2: Nội dung chữ đè lên trên
                         layers.PrimaryLayer().Padding(1, Unit.Centimetre).Column(col =>
                         {
-                            col.Item().PaddingTop(127).PaddingRight(183).AlignCenter().Text(displayName ?? "Bạn của tôi").FontSize(20).Bold().FontColor("#FFD700");
+                            col.Item().PaddingTop(132).PaddingRight(183).AlignCenter().Text(displayName ?? "Bạn của tôi").FontSize(13).Bold().FontColor("#FFD700");
                         });
                     });
                 });
@@ -117,25 +117,6 @@ namespace GraduationInvite.Controllers
             byte[] imageBytes = images.First();
 
             return File(imageBytes, "image/png", $"ThiepMoi_{displayName}.png");
-        }
-
-        [HttpGet]
-        public IActionResult CheckFile()
-        {
-            var wwwroot = _webHostEnvironment.WebRootPath;
-            var imgFolder = Path.Combine(wwwroot, "img");
-
-            var files = Directory.Exists(imgFolder)
-                ? Directory.GetFiles(imgFolder)
-                : new string[0];
-
-            return Ok(new
-            {
-                wwwroot,
-                imgFolderExists = Directory.Exists(imgFolder),
-                filesInImg = files,
-                targetExists = System.IO.File.Exists(Path.Combine(wwwroot, "img", "thiep_moi.png"))
-            });
         }
 
         private string NormalizeVietnameseName(string text)
