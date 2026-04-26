@@ -119,6 +119,24 @@ namespace GraduationInvite.Controllers
             return File(imageBytes, "image/png", $"ThiepMoi_{displayName}.png");
         }
 
+        [HttpGet]
+        public IActionResult CheckFile()
+        {
+            var wwwroot = _webHostEnvironment.WebRootPath;
+            var imgFolder = Path.Combine(wwwroot, "img");
+
+            var files = Directory.Exists(imgFolder)
+                ? Directory.GetFiles(imgFolder)
+                : new string[0];
+
+            return Ok(new
+            {
+                wwwroot,
+                imgFolderExists = Directory.Exists(imgFolder),
+                filesInImg = files,
+                targetExists = System.IO.File.Exists(Path.Combine(wwwroot, "img", "thiep_moi.png"))
+            });
+        }
 
         private string NormalizeVietnameseName(string text)
         {
