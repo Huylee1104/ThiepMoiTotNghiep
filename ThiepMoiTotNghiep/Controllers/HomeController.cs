@@ -95,7 +95,7 @@ namespace GraduationInvite.Controllers
                 container.Page(page =>
                 {
                     page.Size(PageSizes.A5.Landscape());
-                    page.Margin(1, Unit.Centimetre);
+                    page.Margin(0);
                     page.PageColor(Colors.White);
                     page.DefaultTextStyle(x => x.FontSize(14));
 
@@ -107,7 +107,7 @@ namespace GraduationInvite.Controllers
                         // Layer 2: Nội dung chữ đè lên trên
                         layers.PrimaryLayer().Padding(1, Unit.Centimetre).Column(col =>
                         {
-                            col.Item().PaddingTop(132).PaddingRight(183).AlignCenter().Text(displayName ?? "Bạn của tôi").FontSize(13).Bold().FontColor("#FFD700");
+                            col.Item().PaddingTop(160).PaddingRight(183).AlignCenter().Text(displayName ?? "Bạn của tôi").FontSize(13).Bold().FontColor("#FFD700");
                         });
                     });
                 });
