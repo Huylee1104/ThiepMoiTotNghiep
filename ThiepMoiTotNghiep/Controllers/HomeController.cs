@@ -14,7 +14,7 @@ namespace GraduationInvite.Controllers
     {
         private readonly AppDbContext _context;
         // Chuỗi Base64 ảnh mặc định (Bạn có thể thay bằng chuỗi thực tế của bạn)
-        private readonly string DefaultImageBase64 = "/img/huy.png";
+        private readonly string DefaultImageBase64 = "/img/anhhuy.png";
         private readonly IWebHostEnvironment _webHostEnvironment;
 
 
