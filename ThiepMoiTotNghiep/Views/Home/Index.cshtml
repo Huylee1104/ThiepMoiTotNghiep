@@ -13,8 +13,79 @@
             --info-label-color: #8C8C8C;
         }
 
+        /* ===== VIDEO BACKGROUND ===== */
+        #bg-video-laptop,
+        #bg-video-mobile {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        #bg-video-mobile {
+            display: none;
+        }
+
+        @@media (max-width: 768px) {
+            #bg-video-laptop {
+                display: none;
+            }
+
+            #bg-video-mobile {
+                display: block;
+            }
+        }
+
+        /* ===== NÚT NHẠC NỀN ===== */
+        #music-btn {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            z-index: 1000;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-color), #c8790a);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 0 4px 16px rgba(232,149,40,0.5);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+            #music-btn:hover {
+                transform: scale(1.1);
+                box-shadow: 0 6px 20px rgba(232,149,40,0.7);
+            }
+
+            #music-btn.playing {
+                animation: pulse-ring 1.8s ease-out infinite;
+            }
+
+        @@keyframes pulse-ring {
+            0% {
+                box-shadow: 0 0 0 0 rgba(232,149,40,0.6);
+            }
+
+            70% {
+                box-shadow: 0 0 0 14px rgba(232,149,40,0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(232,149,40,0);
+            }
+        }
+
         body {
-            background-color: var(--bg-color);
+            background-color: transparent;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--text-color);
             margin: 0;
@@ -25,6 +96,8 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 40px 20px;
+            position: relative;
+            z-index: 1;
         }
 
         /* Phần Tiêu đề trên cùng */
@@ -51,8 +124,10 @@
             border: 3px solid var(--accent-color);
             padding: 15px 40px;
             border-radius: 10px;
-            background-color: var(--card-bg);
+            background-color: rgba(255, 255, 255, 0.85);
             box-shadow: 0 4px 10px rgba(232, 149, 40, 0.2);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
 
         .graduation-title {
@@ -79,11 +154,13 @@
 
         /* Cột trái: Thông tin */
         .info-card {
-            background-color: var(--card-bg);
+            background-color: rgba(255, 255, 255, 0.88);
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             border: 1px solid rgba(232, 149, 40, 0.1);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
 
         .info-item {
@@ -209,12 +286,14 @@
 
         /* Cột phải: Ảnh */
         .image-card {
-            background-color: var(--card-bg);
+            background-color: rgba(255, 255, 255, 0.88);
             border-radius: 15px;
             padding: 10px; /* Khung trắng bên trong */
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             border: 3px solid var(--accent-color); /* Viền vàng đậm bên ngoài */
             position: relative;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
 
         .guest-image-container {
@@ -325,10 +404,150 @@
                 font-size: 16px;
             }
         }
+
+        /* ===== CAROUSEL ẢNH KỶ NIỆM ===== */
+        .carousel-section {
+            position: relative;
+            margin-bottom: 36px;
+            user-select: none;
+        }
+
+        .carousel-track-wrapper {
+            overflow: hidden;
+            border-radius: 14px;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+        }
+
+        .carousel-slide {
+            flex: 0 0 25%;
+            padding: 0 6px;
+            box-sizing: border-box;
+        }
+
+            .carousel-slide img {
+                width: 100%;
+                aspect-ratio: 4 / 3;
+                object-fit: cover;
+                border-radius: 10px;
+                display: block;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+                border: 2px solid rgba(232,149,40,0.35);
+            }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(232,149,40,0.85);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+            transition: background 0.2s, transform 0.2s;
+        }
+
+            .carousel-btn:hover {
+                background: #c8790a;
+                transform: translateY(-50%) scale(1.1);
+            }
+
+        .carousel-btn-prev {
+            left: -18px;
+        }
+
+        .carousel-btn-next {
+            right: -18px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 7px;
+            margin-top: 12px;
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(166,124,82,0.35);
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            border: none;
+            padding: 0;
+        }
+
+            .carousel-dot.active {
+                background: var(--accent-color);
+                transform: scale(1.3);
+            }
+
+        @@media (max-width: 768px) {
+            .carousel-slide {
+                flex: 0 0 100%;
+            }
+
+            .carousel-btn-prev {
+                left: 4px;
+            }
+
+            .carousel-btn-next {
+                right: 4px;
+            }
+        }
     </style>
 }
 
+<video id="bg-video-laptop" autoplay muted loop playsinline>
+    <source src="~/Video/Ngang_LapTop.mp4" type="video/mp4">
+</video>
+
+<video id="bg-video-mobile" autoplay muted loop playsinline>
+    <source src="~/Video/Doc_Mobile.mp4" type="video/mp4">
+</video>
+
+<button id="music-btn" title="Bật/Tắt nhạc nền" onclick="toggleMusic()">
+    <i class="bi bi-music-note-beamed" id="music-icon"></i>
+</button>
+
+<audio id="bg-music" loop>
+    <source src="~/Video/NhacNen.mp3" type="audio/mpeg">
+</audio>
+
 <div class="main-container">
+
+    <!-- ===== CAROUSEL ANH KY NIEM ===== -->
+    <div class="carousel-section">
+        <button class="carousel-btn carousel-btn-prev" onclick="carouselMove(-1)" aria-label="Truoc"><i class="bi bi-chevron-left"></i></button>
+        <div class="carousel-track-wrapper">
+            <div class="carousel-track" id="carouselTrack">
+                <div class="carousel-slide"><img src="~/img/kyNiem/1.jpg" alt="Anh ky niem 1"></div>
+                <div class="carousel-slide"><img src="~/img/kyNiem/2.jpg" alt="Anh ky niem 2"></div>
+                <div class="carousel-slide"><img src="~/img/kyNiem/3.jpg" alt="Anh ky niem 3"></div>
+                <div class="carousel-slide"><img src="~/img/kyNiem/4.jpg" alt="Anh ky niem 4"></div>
+                <div class="carousel-slide"><img src="~/img/kyNiem/5.jpg" alt="Anh ky niem 5"></div>
+                <div class="carousel-slide"><img src="~/img/kyNiem/6.jpg" alt="Anh ky niem 6"></div>
+                <div class="carousel-slide"><img src="~/img/kyNiem/7.jpg" alt="Anh ky niem 7"></div>
+                <div class="carousel-slide"><img src="~/img/kyNiem/8.jpg" alt="Anh ky niem 8"></div>
+            </div>
+        </div>
+        <button class="carousel-btn carousel-btn-next" onclick="carouselMove(1)" aria-label="Tiep"><i class="bi bi-chevron-right"></i></button>
+        <div class="carousel-dots" id="carouselDots"></div>
+    </div>
+
     <div class="header-section">
         <p class="welcome-text">Chào mừng</p>
         <p id="welcomeTextName" class="guest-name-header">Quý khách</p>
@@ -402,7 +621,7 @@
                 <p class="participation-text-top">Load lại trang để có thể đổi lựa chọn!</p>
             </div>
 
-            <button id="btnPrint" class="btn-print-custom" style="display: none;" onclick="printInvitation()">
+            <button id="btnPrint" class="btn-print-custom" onclick="printInvitation()">
                 <i class="bi bi-printer"></i> In Thiệp
             </button>
         </div>
@@ -425,7 +644,8 @@
                 <h5 class="modal-title" id="nameModalLabel">Nhập Tên Khách Mời</h5>
             </div>
             <div class="modal-body">
-                <p>Vui lòng nhập họ và tên để chúng tôi xác nhận danh sách:</p>
+                <div class="text-center mb-1">Vui lòng nhập họ và tên để chúng tôi xác nhận danh sách!</div>
+                <div class="text-center mb-1">(Xin lỗi bạn, tốc độ tải lần đầu sẽ hơi chậm)</div>
                 <input type="text" id="guestNameInput" class="form-control" placeholder="Ví dụ: Lê Quốc Huy" />
                 <div id="nameError" class="text-danger mt-2" style="display: none;">Vui lòng nhập tên!</div>
             </div>
@@ -474,6 +694,153 @@
         let nameModal;
         let attendanceModal;
 
+        // ===== CAROUSEL =====
+        (function () {
+            const track = document.getElementById('carouselTrack');
+            const dotsContainer = document.getElementById('carouselDots');
+            if (!track) return;
+
+            const slides = Array.from(track.children);
+            const total = slides.length;
+            let current = 0;
+            let autoTimer = null;
+            let isTransitioning = false;
+
+            function visibleCount() {
+                return window.innerWidth <= 768 ? 1 : 4;
+            }
+
+            // Clone slides đầu & cuối để tạo hiệu ứng vòng lặp liền mạch
+            function buildInfiniteTrack() {
+                // Xóa clone cũ nếu có
+                track.querySelectorAll('.carousel-clone').forEach(el => el.remove());
+
+                const vc = visibleCount();
+                // Clone cuối thêm vào đầu
+                for (let i = total - 1; i >= total - vc; i--) {
+                    const clone = slides[i].cloneNode(true);
+                    clone.classList.add('carousel-clone');
+                    track.prepend(clone);
+                }
+                // Clone đầu thêm vào cuối
+                for (let i = 0; i < vc; i++) {
+                    const clone = slides[i].cloneNode(true);
+                    clone.classList.add('carousel-clone');
+                    track.append(clone);
+                }
+            }
+
+            function allSlides() { return Array.from(track.children); }
+
+            function slideWidth() {
+                const vc = visibleCount();
+                return 100 / vc;
+            }
+
+            function getOffset() {
+                const vc = visibleCount();
+                // current + vc (vì có vc clone ở đầu)
+                return -(current + vc) * slideWidth();
+            }
+
+            function setTransition(on) {
+                track.style.transition = on
+                    ? 'transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                    : 'none';
+            }
+
+            function goTo(index, animate) {
+                setTransition(animate !== false);
+                track.style.transform = `translateX(${-(index + visibleCount()) * slideWidth()}%)`;
+            }
+
+            function updateDots() {
+                Array.from(dotsContainer.children).forEach((dot, i) => {
+                    dot.classList.toggle('active', i === ((current % total + total) % total));
+                });
+            }
+
+            function buildDots() {
+                dotsContainer.innerHTML = '';
+                for (let i = 0; i < total; i++) {
+                    const dot = document.createElement('button');
+                    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                    dot.setAttribute('aria-label', 'Hình ' + (i + 1));
+                    dot.addEventListener('click', () => carouselMoveTo(i));
+                    dotsContainer.appendChild(dot);
+                }
+            }
+
+            function init() {
+                buildInfiniteTrack();
+                buildDots();
+                // Set slide width cho tất cả
+                Array.from(track.children).forEach(s => {
+                    s.style.flex = '0 0 ' + slideWidth() + '%';
+                });
+                setTransition(false);
+                goTo(0, false);
+                updateDots();
+                startAuto();
+            }
+
+            function move(dir) {
+                if (isTransitioning) return;
+                isTransitioning = true;
+                current += dir;
+                goTo(current, true);
+            }
+
+            // Xử lý vòng lặp sau khi transition kết thúc
+            track.addEventListener('transitionend', () => {
+                const vc = visibleCount();
+                if (current >= total) {
+                    current = 0;
+                    setTransition(false);
+                    track.style.transform = `translateX(${-(current + vc) * slideWidth()}%)`;
+                } else if (current < 0) {
+                    current = total - 1;
+                    setTransition(false);
+                    track.style.transform = `translateX(${-(current + vc) * slideWidth()}%)`;
+                }
+                updateDots();
+                isTransitioning = false;
+            });
+
+            function startAuto() {
+                clearInterval(autoTimer);
+                autoTimer = setInterval(() => move(1), 5000);
+            }
+
+            // Public: nút mũi tên
+            window.carouselMove = function (dir) {
+                move(dir);
+                startAuto(); // reset timer khi bấm tay
+            };
+
+            window.carouselMoveTo = function (index) {
+                if (isTransitioning) return;
+                isTransitioning = true;
+                current = index;
+                goTo(current, true);
+                startAuto();
+            };
+
+            // Rebuild khi đổi orientation / resize
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    current = 0;
+                    init();
+                }, 200);
+            });
+
+            init();
+        })();
+
+        // ===== END CAROUSEL =====
+
         $(document).ready(function () {
             $('#guestImage').attr('src', '/img/anhhuy.png');
             nameModal = new bootstrap.Modal(document.getElementById('nameModal'));
@@ -509,9 +876,9 @@
 
                 nameModal.hide();
 
-                setTimeout(function () {
-                    attendanceModal.show();
-                }, 5000);
+                // setTimeout(function () {
+                //     attendanceModal.show();
+                // }, 5000);
             });
         }
 
@@ -548,6 +915,23 @@
         //         }, 500);
         //     };
         // }
+
+        function toggleMusic() {
+            const audio = document.getElementById('bg-music');
+            const btn = document.getElementById('music-btn');
+            const icon = document.getElementById('music-icon');
+            if (audio.paused) {
+                audio.play();
+                btn.classList.add('playing');
+                icon.className = 'bi bi-music-note-list';
+                btn.title = 'Tắt nhạc nền';
+            } else {
+                audio.pause();
+                btn.classList.remove('playing');
+                icon.className = 'bi bi-music-note-beamed';
+                btn.title = 'Bật nhạc nền';
+            }
+        }
 
         function printInvitation() {
             const url = '/Home/GeneratePdf?id=' + currentGuestId + '&displayName=' + encodeURIComponent(currentGuestName);
