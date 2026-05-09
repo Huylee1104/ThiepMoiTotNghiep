@@ -107,7 +107,7 @@ namespace GraduationInvite.Controllers
                         // Layer 2: Nội dung chữ đè lên trên
                         layers.PrimaryLayer().Padding(1, Unit.Centimetre).Column(col =>
                         {
-                            col.Item().PaddingTop(160).PaddingRight(183).AlignCenter().Text(displayName ?? "Bạn của tôi").FontSize(13).Bold().FontColor("#FFD700");
+                            col.Item().PaddingTop(157).PaddingRight(183).AlignCenter().Text(displayName ?? "Bạn của tôi").FontSize(13).Bold().FontColor("#000000");
                         });
                     });
                 });
