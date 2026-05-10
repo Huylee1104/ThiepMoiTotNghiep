@@ -237,6 +237,45 @@
     </div>
 </div>
 
+<div id="albumModal" role="dialog" aria-modal="true" aria-label="Album tốt nghiệp">
+
+    <!-- Header: tiêu đề + số trang + nút đóng -->
+    <header id="albumHeader">
+        <h2 id="albumTitle">✦ Album Tốt Nghiệp</h2>
+        <span id="albumPageInfo">Trang 1</span>
+        <button id="btnCloseAlbum" aria-label="Đóng album" title="Đóng">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </header>
+
+    <!-- Wrapper chứa flipbook + nút nav -->
+    <div id="albumWrapper">
+        <!-- Nút lật trang trước -->
+        <button class="album-nav-btn" id="btnPrev" aria-label="Trang trước" title="Trang trước">
+            <i class="bi bi-chevron-left"></i>
+        </button>
+
+        <!-- Container StPageFlip sẽ render vào đây -->
+        <div id="flipbookContainer">
+            <!-- Loading spinner -->
+            <div id="albumLoading">
+                <div class="spinner-ring"></div>
+                <span class="loading-text">Đang mở album…</span>
+            </div>
+            <!-- Các trang .album-page được inject bởi JS -->
+        </div>
+
+        <!-- Nút lật trang sau -->
+        <button class="album-nav-btn" id="btnNext" aria-label="Trang tiếp" title="Trang tiếp">
+            <i class="bi bi-chevron-right"></i>
+        </button>
+    </div>
+
+    <!-- Footer: dot navigator -->
+    <footer id="albumFooter"></footer>
+
+</div>
+
 @section Scripts {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 

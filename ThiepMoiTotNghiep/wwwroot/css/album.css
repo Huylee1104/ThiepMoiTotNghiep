@@ -1,0 +1,362 @@
+﻿#albumModal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--overlay-bg);
+    /* Blur hậu cảnh nhẹ */
+    backdrop-filter: blur(6px) saturate(0.8);
+    -webkit-backdrop-filter: blur(6px) saturate(0.8);
+    /* Trạng thái ẩn ban đầu */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition);
+}
+
+    /* Khi active → fade in */
+    #albumModal.is-open {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    /* Decorative grain overlay — tạo cảm giác sang trọng, ấm áp */
+    #albumModal::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 0;
+    }
+
+/* ============================================================
+       HEADER: tiêu đề + nút đóng
+       ============================================================ */
+#albumHeader {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 960px;
+    padding: 0 16px 14px;
+}
+
+#albumTitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.35rem);
+    color: #d4af37;
+    letter-spacing: 0.04em;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    margin: 0;
+}
+
+/* Dòng trang hiện tại */
+#albumPageInfo {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 0.78rem;
+    color: rgba(232,213,163,0.6);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+/* Nút đóng modal */
+#btnCloseAlbum {
+    background: rgba(201,169,110,0.12);
+    border: 1px solid rgba(201,169,110,0.3);
+    color: var(--gold-light);
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: background var(--transition), transform var(--transition);
+}
+
+    #btnCloseAlbum:hover {
+        background: rgba(201,169,110,0.3);
+        transform: rotate(90deg);
+    }
+
+/* ============================================================
+       FLIPBOOK WRAPPER
+       ============================================================ */
+#albumWrapper {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0 8px;
+}
+
+/* Container thực cho StPageFlip */
+#flipbookContainer {
+    box-shadow: var(--shadow-book);
+    border-radius: var(--radius-page);
+    overflow: hidden;
+    position: relative;
+}
+
+/* ============================================================
+       CÁC TRANG FLIPBOOK — được tạo động bằng JS
+       ============================================================ */
+
+/* Trang ảnh */
+.album-page {
+    background: #1c1710;
+    overflow: hidden;
+    position: relative;
+}
+
+    .album-page img:not(.album-page-bg) {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        position: relative;
+        z-index: 1;
+        display: block;
+        user-select: none;
+        -webkit-user-drag: none;
+        border-radius: var(--radius-page);
+    }
+
+.album-page-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(18px) brightness(0.5) saturate(0.7);
+    transform: scale(1.1);
+    z-index: 0;
+}
+
+/* Trang bìa trước (trang 0) */
+.page-cover-front {
+    background: linear-gradient(160deg, #1e180e 0%, #2c2010 60%, #1a1308 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+}
+
+    /* Viền trang bìa */
+    .page-cover-front::before {
+        content: '';
+        position: absolute;
+        inset: 16px;
+        border: 1px solid rgba(201,169,110,0.25);
+        border-radius: 2px;
+        pointer-events: none;
+    }
+
+    /* Bông hoa trang trí góc bìa */
+    .page-cover-front::after {
+        content: '';
+        position: absolute;
+        width: 160px;
+        height: 160px;
+        bottom: -40px;
+        right: -40px;
+        background: radial-gradient(circle, rgba(201,169,110,0.08) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+
+.cover-ornament {
+    font-size: 2rem;
+    color: var(--gold);
+    opacity: 0.8;
+    line-height: 1;
+}
+
+.cover-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 3vw, 1.8rem);
+    color: #d4af37;
+    text-align: center;
+    line-height: 1.3;
+    padding: 0 24px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.6);
+}
+
+.cover-subtitle {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.65rem, 1.5vw, 0.82rem);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(201,169,110,0.55);
+    text-align: center;
+}
+
+.cover-year {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 4vw, 2.4rem);
+    color: #d4af37;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+    text-align: center;
+}
+
+/* Trang bìa sau */
+.page-cover-back {
+    background: linear-gradient(160deg, #1a1308 0%, #2c2010 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .page-cover-back::before {
+        content: '';
+        position: absolute;
+        inset: 16px;
+        border: 1px solid rgba(201,169,110,0.15);
+        border-radius: 2px;
+    }
+
+/* ============================================================
+       NÚT PREV / NEXT
+       ============================================================ */
+.album-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(201,169,110,0.1);
+    border: 1px solid rgba(201,169,110,0.25);
+    color: var(--gold-light);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: background var(--transition), transform var(--transition), opacity var(--transition);
+    opacity: 0.7;
+}
+
+    .album-nav-btn:hover {
+        background: rgba(201,169,110,0.28);
+        opacity: 1;
+    }
+
+#btnPrev {
+    left: -56px;
+}
+
+#btnNext {
+    right: -56px;
+}
+
+/* Mobile: nút nav nằm phía dưới wrapper */
+@media (max-width: 640px) {
+    #btnPrev {
+        left: 4px;
+        opacity: 0.85;
+        z-index: 20;
+    }
+
+    #btnNext {
+        right: 4px;
+        opacity: 0.85;
+        z-index: 20;
+    }
+
+    .album-nav-btn {
+        width: 36px;
+        height: 36px;
+        padding: 8px;
+        box-sizing: content-box;
+    }
+
+}
+
+/* ============================================================
+       LOADING SPINNER — hiện khi chưa render xong
+       ============================================================ */
+#albumLoading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: rgba(12,9,5,0.85);
+    z-index: 20;
+    border-radius: var(--radius-page);
+    transition: opacity 0.4s ease;
+}
+
+    #albumLoading.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+.spinner-ring {
+    width: 44px;
+    height: 44px;
+    border: 2px solid rgba(201,169,110,0.15);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(201,169,110,0.55);
+}
+
+/* ============================================================
+       FOOTER: dots navigator
+       ============================================================ */
+#albumFooter {
+    position: relative;
+    z-index: 2;
+    padding: 14px 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(201,169,110,0.25);
+    transition: background var(--transition), transform var(--transition);
+    cursor: pointer;
+}
+
+    .dot.active {
+        background: var(--gold);
+        transform: scale(1.4);
+    }

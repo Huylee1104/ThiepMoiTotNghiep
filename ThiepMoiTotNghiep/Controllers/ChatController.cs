@@ -36,7 +36,7 @@ namespace ThiepMoiTotNghiep.Controllers
             {
                 m.UserName,
                 m.Content,
-                createdAt = m.CreatedAt?.ToString("HH:mm dd/MM")
+                createdAt = FormatVnTime(m.CreatedAt)
             }));
         }
 
