@@ -217,32 +217,3 @@ function printInvitation() {
     const url = '/Home/GeneratePdf?id=' + currentGuestId + '&displayName=' + encodeURIComponent(currentGuestName);
     window.open(url, '_blank');
 }
-
-function toggleChat() {
-    const popup = document.getElementById('chat-popup');
-    const btn = document.getElementById('chat-btn');
-    const isHidden = popup.style.display === 'none' || popup.style.display === '';
-    popup.style.display = isHidden ? 'flex' : 'none';
-    btn.classList.toggle('active', isHidden);
-    if (isHidden) scrollToBottom();
-}
-
-function sendMsg(e) {
-    if (e && e.key !== 'Enter') return;
-    const input = document.getElementById('chat-input');
-    const text = input.value.trim();
-    if (!text) return;
-
-    const box = document.getElementById('chat-messages');
-    const div = document.createElement('div');
-    div.className = 'msg msg-right';
-    div.textContent = text;
-    box.appendChild(div);
-    input.value = '';
-    scrollToBottom();
-}
-
-function scrollToBottom() {
-    const box = document.getElementById('chat-messages');
-    box.scrollTop = box.scrollHeight;
-}

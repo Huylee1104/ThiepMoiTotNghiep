@@ -30,22 +30,17 @@
 <!-- Popup chat -->
 <div id="chat-popup" style="display:none;">
     <div id="chat-header">
-        <span>Cồng đồng bạn của <b>Quốc Huy</b></span>
+        <span>Cộng đồng bạn của <b>Quốc Huy</b></span>
         <button onclick="toggleChat()" title="Thu nhỏ">－</button>
     </div>
 
     <div id="chat-messages">
-        <!-- Tin nhắn mẫu -->
-        <div class="msg msg-left">Oke fennn để bữa sau tốt nghiệp ae làm tấm nữa kk</div>
-        <div class="msg msg-right">Ok kk</div>
-        <div class="msg msg-right">Ùa có mấy hình hà ta. Hay nó chưa qua hết</div>
-        <div class="msg msg-left">À để t gửi qua hết cho</div>
-        <div class="msg msg-right">Ok cảm ơn nhé</div>
+        <!-- Lịch sử chat sẽ được load bằng JS -->
     </div>
 
     <div id="chat-input-area">
-        <input type="text" id="chat-input" placeholder="Aa" onkeydown="sendMsg(event)">
-        <button onclick="sendMsg()"><i class="bi bi-send-fill"></i></button>
+        <input type="text" id="chat-input" placeholder="Aa" onkeydown="sendMsg(event)" maxlength="500">
+        <button id="chat-send-btn" onclick="sendMsg()"><i class="bi bi-send-fill"></i></button>
     </div>
 </div>
 

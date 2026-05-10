@@ -1,5 +1,6 @@
 ﻿using GraduationInvite.Models;
 using Microsoft.EntityFrameworkCore;
+using ThiepMoiTotNghiep.Models;
 
 namespace GraduationInvite.Data
 {
@@ -8,5 +9,6 @@ namespace GraduationInvite.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<KhachMoi> KhachMois { get; set; }
+        public DbSet<messages> messages { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using QuestPDF.Infrastructure;
 using System;
+using ThiepMoiTotNghiep.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ QuestPDF.Settings.License = LicenseType.Community;
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -28,5 +30,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();
