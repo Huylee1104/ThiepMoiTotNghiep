@@ -36,7 +36,12 @@ namespace ThiepMoiTotNghiep.Controllers
             {
                 m.UserName,
                 m.Content,
-                createdAt = FormatVnTime(m.CreatedAt)
+                createdAt = FormatVnTime(m.CreatedAt),
+                replyTo = (m.ReplyToContent != null) ? new
+                {
+                    userName = m.ReplyToUserName,
+                    content = m.ReplyToContent
+                } : null
             }));
         }
 
@@ -54,7 +59,9 @@ namespace ThiepMoiTotNghiep.Controllers
             {
                 UserName = NormalizeVietnameseName(request.UserName),
                 Content = request.Content.Trim(),
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                ReplyToUserName = request.ReplyTo?.UserName,
+                ReplyToContent = request.ReplyTo?.Content
             };
 
             _context.messages.Add(msg);
@@ -62,8 +69,17 @@ namespace ThiepMoiTotNghiep.Controllers
 
             var timeStr = FormatVnTime(msg.CreatedAt);
 
-            // ← Broadcast cho tất cả client qua SignalR
-            await _hubContext.Clients.All.SendAsync("ReceiveMessage", msg.UserName, msg.Content, timeStr);
+            var replyToPayload = (msg.ReplyToContent != null)
+                ? new { userName = msg.ReplyToUserName, content = msg.ReplyToContent }
+                : (object?)null;
+
+            await _hubContext.Clients.All.SendAsync(
+                "ReceiveMessage",
+                msg.UserName,
+                msg.Content,
+                timeStr,
+                replyToPayload
+            );
 
             return Ok();
         }
@@ -91,6 +107,13 @@ namespace ThiepMoiTotNghiep.Controllers
     }
 
     public class SendMessageRequest
+    {
+        public string? UserName { get; set; }
+        public string? Content { get; set; }
+        public ReplyToDto? ReplyTo { get; set; }
+    }
+
+    public class ReplyToDto
     {
         public string? UserName { get; set; }
         public string? Content { get; set; }

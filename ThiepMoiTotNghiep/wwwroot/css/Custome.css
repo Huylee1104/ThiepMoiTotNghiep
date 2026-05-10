@@ -679,3 +679,99 @@ body {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+/* ── Banner "Đang trả lời…" phía trên input ── */
+#reply-banner {
+    display: none; /* ẩn mặc định, JS bật lên */
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: #f0f0f0;
+    border-left: 3px solid #7b61ff;
+    border-radius: 6px 6px 0 0;
+    font-size: 13px;
+    color: #444;
+    position: relative;
+}
+
+    #reply-banner .reply-banner-body {
+        flex: 1;
+        overflow: hidden;
+    }
+
+#reply-banner-name {
+    font-weight: 700;
+    color: #7b61ff;
+    margin-right: 4px;
+}
+
+#reply-banner-text {
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#reply-cancel-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #999;
+    font-size: 16px;
+    line-height: 1;
+    padding: 0 2px;
+    flex-shrink: 0;
+}
+
+    #reply-cancel-btn:hover {
+        color: #333;
+    }
+
+/* ── Preview tin được trả lời bên trong bubble ── */
+.msg-reply-preview {
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.08);
+    border-left: 3px solid rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Trong bubble của mình (msg-right), dùng màu ngược lại */
+.msg-right .msg-reply-preview {
+    background: rgba(255, 255, 255, 0.2);
+    border-left-color: rgba(255, 255, 255, 0.6);
+}
+
+.msg-reply-preview-name {
+    font-weight: 700;
+    margin-bottom: 2px;
+    color: inherit;
+    opacity: 0.85;
+}
+
+.msg-reply-preview-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0.75;
+}
+
+/* ── Bubble đang được chọn để reply → mờ nhẹ ── */
+.msg.selected-reply {
+    opacity: 0.45;
+    transition: opacity 0.2s;
+}
+
+/* ── Nội dung chính của tin nhắn ── */
+.msg-content {
+    display: block;
+    word-break: break-word;
+}

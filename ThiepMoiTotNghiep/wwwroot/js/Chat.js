@@ -1,14 +1,18 @@
 ﻿let lastSentTime = 0; // Chống spam
 const SEND_COOLDOWN_MS = 1000;
 
+// ── State reply ────────────────────────────────────────────────
+let replyingTo = null; // { userName, content }
+
 // ── SignalR connection ─────────────────────────────────────────
 const chatConnection = new signalR.HubConnectionBuilder()
     .withUrl("/chatHub")
     .withAutomaticReconnect()
     .build();
 
-chatConnection.on("ReceiveMessage", (userName, content, createdAt) => {
-    appendMessage({ userName, content, createdAt });
+// Backend cần broadcast thêm replyTo (có thể null)
+chatConnection.on("ReceiveMessage", (userName, content, createdAt, replyTo) => {
+    appendMessage({ userName, content, createdAt, replyTo });
     scrollToBottom();
 });
 
@@ -32,13 +36,14 @@ function escapeHtml(str) {
 }
 
 // ── Tạo và chèn message vào DOM ────────────────────────────────
-function appendMessage({ userName, content, createdAt }) {
+function appendMessage({ userName, content, createdAt, replyTo }) {
     const box = document.getElementById("chat-messages");
     const isMe = userName === normalizeNameJS(currentGuestName);
 
     const wrapper = document.createElement("div");
     wrapper.className = "msg-wrapper " + (isMe ? "right" : "left");
 
+    // ── Meta (tên + giờ) ──
     const meta = document.createElement("div");
     meta.className = "msg-meta";
 
@@ -53,13 +58,76 @@ function appendMessage({ userName, content, createdAt }) {
     meta.appendChild(nameEl);
     meta.appendChild(timeEl);
 
+    // ── Bubble chứa reply preview + nội dung chính ──
     const bubble = document.createElement("div");
     bubble.className = "msg " + (isMe ? "msg-right" : "msg-left");
-    bubble.textContent = content; // textContent an toàn, không dùng innerHTML
+
+    // Nếu tin nhắn này là reply, hiển thị preview tin được trả lời
+    if (replyTo && replyTo.content) {
+        const preview = document.createElement("div");
+        preview.className = "msg-reply-preview";
+
+        const previewName = document.createElement("span");
+        previewName.className = "msg-reply-preview-name";
+        previewName.textContent = replyTo.userName || "";
+
+        const previewText = document.createElement("span");
+        previewText.className = "msg-reply-preview-text";
+        previewText.textContent = replyTo.content;
+
+        preview.appendChild(previewName);
+        preview.appendChild(previewText);
+        bubble.appendChild(preview);
+    }
+
+    const textNode = document.createElement("span");
+    textNode.className = "msg-content";
+    textNode.textContent = content;
+    bubble.appendChild(textNode);
+
+    // ── Gán sự kiện click để chọn reply ──
+    bubble.addEventListener("click", () => selectReply(userName, content, bubble));
 
     wrapper.appendChild(meta);
     wrapper.appendChild(bubble);
     box.appendChild(wrapper);
+}
+
+// ── Chọn tin nhắn để reply ─────────────────────────────────────
+function selectReply(userName, content, bubbleEl) {
+    // Bỏ highlight cũ
+    document.querySelectorAll(".msg.selected-reply").forEach(el => {
+        el.classList.remove("selected-reply");
+    });
+
+    replyingTo = { userName, content };
+
+    // Highlight bubble được chọn (mờ nhẹ)
+    bubbleEl.classList.add("selected-reply");
+
+    // Hiển thị banner "Đang trả lời"
+    const banner = document.getElementById("reply-banner");
+    const bannerName = document.getElementById("reply-banner-name");
+    const bannerText = document.getElementById("reply-banner-text");
+
+    bannerName.textContent = userName;
+    bannerText.textContent = content;
+    banner.style.display = "flex";
+
+    // Focus input
+    document.getElementById("chat-input").focus();
+}
+
+// ── Hủy reply ──────────────────────────────────────────────────
+function cancelReply() {
+    replyingTo = null;
+
+    document.querySelectorAll(".msg.selected-reply").forEach(el => {
+        el.classList.remove("selected-reply");
+    });
+
+    const banner = document.getElementById("reply-banner");
+    banner.style.display = "none";
 }
 
 // ── Normalize tên ở phía JS để so sánh với DB ─────────────────
@@ -77,7 +145,7 @@ function normalizeNameJS(name) {
 // ── Load lịch sử chat ──────────────────────────────────────────
 async function loadChatHistory() {
     const box = document.getElementById("chat-messages");
-    box.innerHTML = ""; // Xóa tin nhắn hardcode
+    box.innerHTML = "";
 
     try {
         const res = await fetch("/api/chat/messages");
@@ -86,7 +154,8 @@ async function loadChatHistory() {
         msgs.forEach(m => appendMessage({
             userName: m.userName,
             content: m.content,
-            createdAt: m.createdAt
+            createdAt: m.createdAt,
+            replyTo: m.replyTo || null   // { userName, content } hoặc null
         }));
         scrollToBottom();
     } catch (err) {
@@ -103,7 +172,6 @@ async function sendMsg(e) {
     if (!text) return;
 
     if (!currentGuestName) {
-        // Tuỳ bạn: hiển thị yêu cầu nhập tên theo UI của mình
         console.warn("Chưa có tên người dùng.");
         return;
     }
@@ -117,13 +185,18 @@ async function sendMsg(e) {
     btn.disabled = true;
     input.disabled = true;
 
+    // Snapshot replyTo rồi xóa ngay để UX mượt
+    const currentReply = replyingTo;
+    cancelReply();
+
     try {
         const res = await fetch("/api/chat/send", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 userName: currentGuestName,
-                content: text
+                content: text,
+                replyTo: currentReply || null   // gửi null nếu không reply
             })
         });
 
@@ -134,7 +207,7 @@ async function sendMsg(e) {
         }
 
         input.value = "";
-        // SignalR sẽ broadcast về, không cần appendMessage thủ công ở đây
+        // SignalR broadcast về, appendMessage xử lý
 
     } catch (err) {
         console.error("Lỗi gửi tin nhắn:", err);

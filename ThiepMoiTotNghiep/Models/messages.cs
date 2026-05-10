@@ -15,5 +15,11 @@ namespace ThiepMoiTotNghiep.Models
 
         [Column("createdat")]
         public DateTime? CreatedAt { get; set; }
+
+        [Column("reply_to_username")]
+        public string? ReplyToUserName { get; set; }
+
+        [Column("reply_to_content")]
+        public string? ReplyToContent { get; set; }
     }
 }

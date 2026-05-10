@@ -32,9 +32,8 @@
         z-index: 0;
     }
 
-/* ============================================================
-       HEADER: tiêu đề + nút đóng
-       ============================================================ */
+/* 
+       HEADER: tiêu đề + nút đóng*/
 #albumHeader {
     position: relative;
     z-index: 2;
@@ -137,7 +136,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: blur(18px) brightness(0.5) saturate(0.7);
+    filter: blur(8px) brightness(0.5) saturate(0.7);
     transform: scale(1.1);
     z-index: 0;
 }
@@ -213,6 +212,79 @@
     text-align: center;
 }
 
+/* 4 góc */
+.cover-ornament-corner {
+    position: absolute;
+    font-size: 0.85rem;
+    color: var(--gold);
+    opacity: 0.45;
+    z-index: 2;
+    line-height: 1;
+}
+
+.orn-tl {
+    top: 22px;
+    left: 24px;
+}
+
+.orn-tr {
+    top: 22px;
+    right: 24px;
+}
+
+.orn-bl {
+    bottom: 22px;
+    left: 24px;
+}
+
+.orn-br {
+    bottom: 22px;
+    right: 24px;
+}
+
+/* Divider ── ◆ ── */
+.cover-divider {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 60%;
+    align-self: center;
+    margin: 0 auto;
+}
+
+.cover-divider-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(201,169,110,0.28);
+}
+
+.cover-divider-diamond {
+    color: var(--gold);
+    opacity: 0.6;
+    font-size: 0.55rem;
+    line-height: 1;
+}
+
+/* Hàng chấm tròn */
+.cover-dots {
+    display: flex;
+    gap: 5px;
+}
+
+    .cover-dots span {
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: var(--gold);
+        opacity: 0.35;
+    }
+
+        .cover-dots span:nth-child(3) {
+            opacity: 0.65;
+            width: 4px;
+            height: 4px;
+        }
+
 /* Trang bìa sau */
 .page-cover-back {
     background: linear-gradient(160deg, #1a1308 0%, #2c2010 100%);
@@ -229,9 +301,45 @@
         border-radius: 2px;
     }
 
-/* ============================================================
-       NÚT PREV / NEXT
-       ============================================================ */
+.cover-back-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 32px 28px;
+    text-align: center;
+    z-index: 1;
+}
+
+.cover-back-message {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(0.94rem, 2.1vw, 1.14rem);
+    color: rgba(201,169,110,0.75);
+    line-height: 1.8;
+    margin: 0;
+}
+
+.cover-back-wish {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.85rem, 1.8vw, 1.04rem);
+    color: rgba(201,169,110,0.5);
+    line-height: 1.8;
+    letter-spacing: 0.03em;
+    margin: 0;
+}
+
+.cover-back-fin {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: rgba(201,169,110,0.4);
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+}
+
+       /*/NÚT PREV / NEXT*/
 .album-nav-btn {
     position: absolute;
     top: 50%;

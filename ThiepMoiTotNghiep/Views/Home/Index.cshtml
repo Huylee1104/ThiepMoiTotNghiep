@@ -38,6 +38,14 @@
         <!-- Lịch sử chat sẽ được load bằng JS -->
     </div>
 
+    <div id="reply-banner">
+        <div class="reply-banner-body">
+            <span>Đang trả lời </span><span id="reply-banner-name"></span>:
+            <span id="reply-banner-text"></span>
+        </div>
+        <button id="reply-cancel-btn" onclick="cancelReply()" title="Hủy trả lời">✕</button>
+    </div>
+
     <div id="chat-input-area">
         <input type="text" id="chat-input" placeholder="Aa" onkeydown="sendMsg(event)" maxlength="500">
         <button id="chat-send-btn" onclick="sendMsg()"><i class="bi bi-send-fill"></i></button>

@@ -12,6 +12,10 @@
         "/img/album/4.jpg",
         "/img/album/5.jpg",
         "/img/album/6.jpg",
+        "/img/album/7.jpg",
+        "/img/album/8.jpg",
+        "/img/album/9.jpg",
+        "/img/album/10.jpg",
     ];
 
     /* ------------------------------------------------------------------
@@ -81,7 +85,42 @@
         ornament2.className = "cover-ornament";
         ornament2.textContent = "✦";
 
-        coverFront.append(ornament, covTitle, covSub, covYear, ornament2);
+        ["orn-tl", "orn-tr", "orn-bl", "orn-br"].forEach(cls => {
+            const c = document.createElement("div");
+            c.className = "cover-ornament-corner " + cls;
+            c.textContent = "✦";
+            coverFront.appendChild(c);
+        });
+
+        function makeDots() {
+            const row = document.createElement("div");
+            row.className = "cover-dots";
+            for (let i = 0; i < 5; i++) {
+                const s = document.createElement("span");
+                row.appendChild(s);
+            }
+            return row;
+        }
+        function makeDivider() {
+            const d = document.createElement("div");
+            d.className = "cover-divider";
+            d.innerHTML = `<div class="cover-divider-line"></div>
+                   <span class="cover-divider-diamond">◆</span>
+                   <div class="cover-divider-line"></div>`;
+            return d;
+        }
+
+        coverFront.append(
+            ornament,
+            makeDivider(),
+            covTitle,
+            covSub,
+            makeDots(),
+            covYear,
+            makeDivider(),
+            ornament2 
+        );
+
         container.appendChild(coverFront);
 
         // — Các trang ảnh —
@@ -100,7 +139,7 @@
             img.src = src;
             img.alt = "Ảnh album tốt nghiệp";
             img.draggable = false;
-            img.loading = "lazy";
+            img.loading = "eager";
 
             page.appendChild(bgImg);
             page.appendChild(img);
@@ -112,17 +151,27 @@
         coverBack.className = "album-page page-cover-back";
         coverBack.style.cssText = `width:${pageW}px;height:${pageH}px;position:relative;`;
 
-        const backText = document.createElement("div");
-        backText.style.cssText = `
-      font-family:'Playfair Display',serif;
-      font-style:italic;
-      font-size:1rem;
-      color:rgba(201,169,110,0.4);
-      letter-spacing:0.08em;
-      text-align:center;
-    `;
-        backText.textContent = "✦  Fin  ✦";
-        coverBack.appendChild(backText);
+        const backInner = document.createElement("div");
+        backInner.className = "cover-back-inner";
+
+        const backOrnTop = document.createElement("div");
+        backOrnTop.className = "cover-ornament";
+        backOrnTop.textContent = "✦";
+
+        const backMsg = document.createElement("p");
+        backMsg.className = "cover-back-message";
+        backMsg.textContent = "Mình thực sự rất vui vì sự có mặt của các bạn, điều đó làm cho buổi tốt nghiệp của mình càng thêm ý nghĩa và đáng nhớ.";
+
+        const backWish = document.createElement("p");
+        backWish.className = "cover-back-wish";
+        backWish.textContent = "Xin chúc tất cả các bạn gặp nhiều thành công trong cuộc sống, sức khỏe dồi dào, công việc hanh thông và gặp được nhiều may mắn.";
+
+        const backFin = document.createElement("div");
+        backFin.className = "cover-back-fin";
+        backFin.textContent = "✦  Fin  ✦";
+
+        backInner.append(backOrnTop, backMsg, backWish, backFin);
+        coverBack.appendChild(backInner);
         container.appendChild(coverBack);
     }
 
@@ -204,6 +253,7 @@
         pageFlip.on("flip", (e) => {
             updateDots(e.data);
             updatePageInfo(e.data, totalPages);
+            preloadNearby(e.data);
         });
 
         // Ẩn loading spinner sau khi render xong
@@ -291,4 +341,15 @@
         }, 300);
     });
 
+    function preloadNearby(currentIndex) {
+        // currentIndex là index trang flip, trừ 1 vì trang 0 là cover
+        const imgIndex = currentIndex - 1;
+        [1, 2, 3].forEach(offset => {
+            const src = albumImages[imgIndex + offset];
+            if (src) {
+                const pre = new Image();
+                pre.src = src;
+            }
+        });
+    }
 })();
