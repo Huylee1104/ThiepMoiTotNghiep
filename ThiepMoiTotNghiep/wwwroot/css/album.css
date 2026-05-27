@@ -394,6 +394,21 @@
         box-sizing: content-box;
     }
 
+    .album-page-bg {
+        display: none; /* bỏ blur hoàn toàn */
+    }
+
+    /* Giảm shadow nặng */
+    #flipbookContainer {
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4); /* thay var(--shadow-book) */
+    }
+
+    /* Tắt backdrop-filter tốn GPU */
+    #albumModal {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
 }
 
 /* ============================================================

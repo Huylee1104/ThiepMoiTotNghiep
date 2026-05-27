@@ -494,6 +494,7 @@ body {
     font-size: 22px;
     box-shadow: 0 4px 16px rgba(0,132,255,0.5);
     transition: transform 0.2s, box-shadow 0.2s;
+    overflow: visible;
 }
 
     #chat-btn:hover {
@@ -503,6 +504,26 @@ body {
 
     #chat-btn.active {
         animation: pulse-ring 1.8s ease-out infinite;
+    }
+
+    #chat-btn::after {
+        content: "99+";
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        background: #fff;
+        color: #e53935;
+        font-size: 10px;
+        font-weight: 700;
+        line-height: 1;
+        padding: 2px 5px;
+        border-radius: 999px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        pointer-events: none;
+    }
+
+    #chat-btn.badge-hidden::after {
+        display: none;
     }
 
 #chat-popup {
@@ -775,3 +796,43 @@ body {
     display: block;
     word-break: break-word;
 }
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+    .video-wrapper video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+.video-toggle-btn {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: background 0.2s;
+    z-index: 10;
+}
+
+    .video-toggle-btn:hover {
+        background: rgba(0, 0, 0, 0.8);
+    }

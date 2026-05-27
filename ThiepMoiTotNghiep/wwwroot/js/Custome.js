@@ -196,15 +196,53 @@ function submitAttendance(isAttending) {
     });
 }
 
+let musicPausedByVideo = false;
+
+function toggleVideo() {
+    const video = document.getElementById('ceremonyVideo');
+    const icon = document.getElementById('videoToggleIcon');
+    const audio = document.getElementById('bg-music');
+
+    if (video.paused) {
+        // Bắt đầu phát video
+        if (!audio.paused) {
+            // Nhạc đang chạy → dừng và đánh dấu
+            audio.pause();
+            musicPausedByVideo = true;
+            // Cập nhật UI nút nhạc
+            document.getElementById('music-btn').classList.remove('playing');
+            document.getElementById('music-icon').className = 'bi bi-music-note-beamed';
+            document.getElementById('music-btn').title = 'Bật nhạc nền';
+        }
+        video.play();
+        icon.className = 'bi bi-pause-fill';
+    } else {
+        // Dừng video
+        video.pause();
+        icon.className = 'bi bi-play-fill';
+        // Nếu nhạc bị dừng bởi video thì khôi phục
+        if (musicPausedByVideo) {
+            audio.play();
+            musicPausedByVideo = false;
+            document.getElementById('music-btn').classList.add('playing');
+            document.getElementById('music-icon').className = 'bi bi-music-note-list';
+            document.getElementById('music-btn').title = 'Tắt nhạc nền';
+        }
+    }
+}
+
 function toggleMusic() {
     const audio = document.getElementById('bg-music');
     const btn = document.getElementById('music-btn');
     const icon = document.getElementById('music-icon');
+
     if (audio.paused) {
         audio.play();
         btn.classList.add('playing');
         icon.className = 'bi bi-music-note-list';
         btn.title = 'Tắt nhạc nền';
+        // Nếu người dùng tự bật lại nhạc thì bỏ cờ
+        musicPausedByVideo = false;
     } else {
         audio.pause();
         btn.classList.remove('playing');

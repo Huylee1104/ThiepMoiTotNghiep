@@ -227,6 +227,8 @@ function toggleChat() {
     popup.style.display = isHidden ? "flex" : "none";
     if (btn) btn.classList.toggle("active", isHidden);
     if (isHidden) scrollToBottom();
+
+    document.getElementById('chat-btn').classList.add('badge-hidden');
 }
 
 // ── Scroll xuống cuối ──────────────────────────────────────────
